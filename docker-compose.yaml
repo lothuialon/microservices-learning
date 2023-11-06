@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+  db_user:
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_user:/var/lib/mysql
+  db_fraud:
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_fraud:/var/lib/mysql
+  db_notification:
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_notification:/var/lib/mysql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9000:8080
+volumes:
+  mysql_user:
+  mysql_fraud:
+  mysql_notification:
